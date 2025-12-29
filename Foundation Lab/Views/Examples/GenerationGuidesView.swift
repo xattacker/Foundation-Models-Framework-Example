@@ -54,16 +54,21 @@ struct GenerationGuidesView: View {
         }
 
         // Result Display
-          if let resultView = executor.resultView {
-          VStack(alignment: .leading, spacing: 12) {
-            Label("Generated Product Review", systemImage: "star.leadinghalf.filled")
-              .font(.headline)
+          if let resultView = executor.resultView
+          {
+              VStack(alignment: .leading, spacing: 12) {
+                Label("Generated Product Review", systemImage: "star.leadinghalf.filled")
+                  .font(.headline)
 
-            ResultViewDisplay(
-              resultView: resultView,
-              isSuccess: executor.errorMessage == nil
-            )
-          }
+                ResultViewDisplay(
+                  resultView: resultView,
+                  isSuccess: executor.errorMessage == nil
+                )
+              }
+        }
+        else if let error = executor.errorMessage
+        {
+            ErrorResultDisplay(error: error)
         }
       }
     }
@@ -78,13 +83,13 @@ struct GenerationGuidesView: View {
           performance in
             return VStack(alignment: .leading, spacing: 12) {
                 InfoRow(
-                    icon: "🏷️",
+                    icon: "📖",
                     title: "廠牌",
                     value: performance.brandName
                 )
 
                 InfoRow(
-                    icon: "🏷️",
+                    icon: "📖",
                     title: "車型",
                     value: performance.modelName
                 )
@@ -124,13 +129,13 @@ struct GenerationGuidesView: View {
                 Divider()
 
                 InfoRow(
-                    icon: "📖",
+                    icon: "🏷️",
                     title: "評比分數",
                     value: String(format: "%.1f", performance.score)
                 )
 
                 InfoRow(
-                    icon: "📖",
+                    icon: "🏷️",
                     title: "評語",
                     value: performance.comment
                 )

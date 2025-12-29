@@ -180,6 +180,7 @@ final class ExampleExecutor {
     func clear() {
         isRunning = false
         result = ""
+        resultView = nil
         errorMessage = nil
         successMessage = nil
     }

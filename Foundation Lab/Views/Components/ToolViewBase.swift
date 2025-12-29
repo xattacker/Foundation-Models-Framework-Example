@@ -221,14 +221,61 @@ struct ResultViewDisplay: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: Spacing.small) {
-      HStack {
         Text("RESULT")
           .font(.footnote)
           .fontWeight(.medium)
           .foregroundColor(.secondary)
-      }
+        
+        AnyView(self.resultView)
+    }
+  }
+}
 
-      AnyView(self.resultView)
+
+struct ErrorResultDisplay: View {
+  let error: String
+  @State private var isCopied = false
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: Spacing.small) {
+        HStack {
+          Text("ERROR")
+            .font(.footnote)
+            .fontWeight(.medium)
+            .foregroundColor(.secondary)
+
+          Spacer()
+
+          Button(action: copyToClipboard) {
+            Image(systemName: isCopied ? "checkmark" : "doc.on.doc")
+              .font(.callout)
+              .padding(.horizontal, Spacing.small)
+              .padding(.vertical, 4)
+          }
+          .buttonStyle(.glass)
+        }
+        
+        Text(LocalizedStringKey(error))
+          .font(.body)
+          .textSelection(.enabled)
+          .padding(Spacing.medium)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .background(Color.brown)
+          .cornerRadius(12)
+    }
+  }
+
+  private func copyToClipboard() {
+    #if os(iOS)
+    UIPasteboard.general.string = error
+    #elseif os(macOS)
+    NSPasteboard.general.clearContents()
+    NSPasteboard.general.setString(result, forType: .string)
+    #endif
+
+    isCopied = true
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      isCopied = false
     }
   }
 }
