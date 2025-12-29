@@ -18,7 +18,7 @@ struct BusinessIdeasView: View {
             description: "Generate innovative business concepts and strategies",
             defaultPrompt: DefaultPrompts.businessIdeas,
             currentPrompt: $currentPrompt,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: codeExample,
             onRun: executeBusinessIdea,
@@ -134,8 +134,8 @@ private extension BusinessIdeasView {
     }
 }
 
-#Preview {
-    NavigationStack {
-        BusinessIdeasView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        BusinessIdeasView()
+//    }
+//}

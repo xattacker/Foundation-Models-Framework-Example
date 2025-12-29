@@ -10,36 +10,42 @@ import FoundationModels
 
 extension SchemaErrorHandlingView {
     func createBasicProductSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "Product",
+        DynamicGenerationSchema(
+            name: "Product",
             description: "Product information",
             properties: [
-                DynamicSchemaHelpers.typedProperty(
-                    "name",
-                    type: String.self,
+                DynamicGenerationSchema.Property(
+                    name: "name",
                     description: "Product name",
+                    schema: DynamicGenerationSchema(type: String.self),
                     isOptional: true
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "price",
-                    type: Double.self,
-                    guides: [.minimum(0.01)],
+                DynamicGenerationSchema.Property(
+                    name: "price",
                     description: "Price in dollars",
+                    schema: DynamicGenerationSchema(
+                        type: Double.self,
+                        guides: [.minimum(0.01)]
+                    ),
                     isOptional: true
                 ),
-                DynamicSchemaHelpers.arrayProperty(
-                    "colors",
-                    elementSchema: .init(type: String.self),
+                DynamicGenerationSchema.Property(
+                    name: "colors",
                     description: "Available colors",
-                    isOptional: true,
-                    minimumElements: 1,
-                    maximumElements: 10
+                    schema: DynamicGenerationSchema(
+                        arrayOf: DynamicGenerationSchema(type: String.self),
+                        minimumElements: 1,
+                        maximumElements: 10
+                    ),
+                    isOptional: true
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "weight",
-                    type: Double.self,
-                    guides: [.minimum(0.001)],
+                DynamicGenerationSchema.Property(
+                    name: "weight",
                     description: "Weight in kilograms",
+                    schema: DynamicGenerationSchema(
+                        type: Double.self,
+                        guides: [.minimum(0.001)]
+                    ),
                     isOptional: true
                 )
             ]
@@ -47,107 +53,127 @@ extension SchemaErrorHandlingView {
     }
 
     func createStrictProductSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "StrictProduct",
+        DynamicGenerationSchema(
+            name: "StrictProduct",
             description: "Product with all required fields",
             properties: [
-                DynamicSchemaHelpers.guidedProperty(
-                    "productId",
-                    type: String.self,
-                    guides: [.pattern(/^PROD-\d {6}$/)],
+                DynamicGenerationSchema.Property(
+                    name: "productId",
                     description: "Unique product identifier",
+                    schema: DynamicGenerationSchema(
+                        type: String.self,
+                        guides: [.pattern(/^PROD-\d {6}$/)]
+                    ),
                     isOptional: false  // Required!
                 ),
-                DynamicSchemaHelpers.typedProperty(
-                    "name",
-                    type: String.self,
+                DynamicGenerationSchema.Property(
+                    name: "name",
                     description: "Product name (required)",
-                    isOptional: false
-                ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "category",
-                    type: String.self,
-                    guides: [.anyOf(["Electronics", "Clothing", "Food", "Other"])],
-                    description: "Product category (required)",
+                    schema: DynamicGenerationSchema(type: String.self),
                     isOptional: false  // Required!
                 ),
-                DynamicSchemaHelpers.typedProperty(
-                    "inStock",
-                    type: Bool.self,
+                DynamicGenerationSchema.Property(
+                    name: "category",
+                    description: "Product category (required)",
+                    schema: DynamicGenerationSchema(
+                        type: String.self,
+                        guides: [.anyOf(["Electronics", "Clothing", "Food", "Other"])]
+                    ),
+                    isOptional: false  // Required!
+                ),
+                DynamicGenerationSchema.Property(
+                    name: "inStock",
                     description: "Stock status (required)",
-                    isOptional: false
+                    schema: DynamicGenerationSchema(type: Bool.self),
+                    isOptional: false  // Required!
                 )
             ]
         )
     }
 
     func createTypeSensitiveProductSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "TypeSensitiveProduct",
+        DynamicGenerationSchema(
+            name: "TypeSensitiveProduct",
             description: "Product with specific type requirements",
             properties: [
-                DynamicSchemaHelpers.guidedProperty(
-                    "itemCount",
-                    type: Int.self,
-                    guides: [.range(1...1000)],
-                    description: "Number of items (must be integer)"
+                DynamicGenerationSchema.Property(
+                    name: "itemCount",
+                    description: "Number of items (must be integer)",
+                    schema: DynamicGenerationSchema(
+                        type: Int.self,
+                        guides: [.range(1...1000)]
+                    )
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "price",
-                    type: Decimal.self,
-                    guides: [.minimum(0.01)],
-                    description: "Exact price with decimals"
+                DynamicGenerationSchema.Property(
+                    name: "price",
+                    description: "Exact price with decimals",
+                    schema: DynamicGenerationSchema(
+                        type: Decimal.self,
+                        guides: [.minimum(0.01)]
+                    )
                 ),
-                DynamicSchemaHelpers.typedProperty(
-                    "isAvailable",
-                    type: Bool.self,
-                    description: "Availability status (boolean)"
+                DynamicGenerationSchema.Property(
+                    name: "isAvailable",
+                    description: "Availability status (boolean)",
+                    schema: DynamicGenerationSchema(type: Bool.self)
                 ),
-                DynamicSchemaHelpers.arrayProperty(
-                    "tags",
-                    elementSchema: .init(type: String.self),
+                DynamicGenerationSchema.Property(
+                    name: "tags",
                     description: "Product tags (array of strings)",
-                    minimumElements: 1
+                    schema: DynamicGenerationSchema(
+                        arrayOf: DynamicGenerationSchema(type: String.self),
+                        minimumElements: 1
+                    )
                 )
             ]
         )
     }
 
     func createValidatedProductSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "ValidatedProduct",
+        DynamicGenerationSchema(
+            name: "ValidatedProduct",
             description: "Product with strict validation rules",
             properties: [
-                DynamicSchemaHelpers.guidedProperty(
-                    "sku",
-                    type: String.self,
-                    guides: [.pattern(/^[A-Z] {3}-\d {3}-[A-Z] {3}$/)],
-                    description: "SKU must match pattern ABC-123-XYZ"
+                DynamicGenerationSchema.Property(
+                    name: "sku",
+                    description: "SKU must match pattern ABC-123-XYZ",
+                    schema: DynamicGenerationSchema(
+                        type: String.self,
+                        guides: [.pattern(/^[A-Z] {3}-\d {3}-[A-Z] {3}$/)]
+                    )
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "price",
-                    type: Double.self,
-                    guides: [.range(10.0...999.99)],
-                    description: "Price must be between $10 and $999.99"
+                DynamicGenerationSchema.Property(
+                    name: "price",
+                    description: "Price must be between $10 and $999.99",
+                    schema: DynamicGenerationSchema(
+                        type: Double.self,
+                        guides: [.range(10.0...999.99)]
+                    )
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "discount",
-                    type: Int.self,
-                    guides: [.range(0...50)],
+                DynamicGenerationSchema.Property(
+                    name: "discount",
                     description: "Discount percentage (0-50%)",
+                    schema: DynamicGenerationSchema(
+                        type: Int.self,
+                        guides: [.range(0...50)]
+                    ),
                     isOptional: true
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "status",
-                    type: String.self,
-                    guides: [.anyOf(["active", "discontinued", "coming_soon"])],
-                    description: "Product status (must be one of the allowed values)"
+                DynamicGenerationSchema.Property(
+                    name: "status",
+                    description: "Product status (must be one of the allowed values)",
+                    schema: DynamicGenerationSchema(
+                        type: String.self,
+                        guides: [.anyOf(["active", "discontinued", "coming_soon"])]
+                    )
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "rating",
-                    type: Double.self,
-                    guides: [.range(1.0...5.0)],
+                DynamicGenerationSchema.Property(
+                    name: "rating",
                     description: "Product rating (1.0 to 5.0 in 0.5 increments)",
+                    schema: DynamicGenerationSchema(
+                        type: Double.self,
+                        guides: [.range(1.0...5.0)]
+                    ),
                     isOptional: true
                 )
             ]

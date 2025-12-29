@@ -9,6 +9,7 @@ import SwiftUI
 import FoundationModels
 
 struct AdaptiveNavigationView: View {
+    @State private var contentViewModel = ContentViewModel()
     @State private var languageService = LanguageService()
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -36,7 +37,7 @@ struct AdaptiveNavigationView: View {
         )) {
             Tab(TabSelection.examples.displayName, systemImage: "sparkles", value: .examples) {
                 NavigationStack {
-                    ExamplesView()
+                    ExamplesView(viewModel: $contentViewModel)
                 }
             }
 
@@ -99,7 +100,7 @@ struct AdaptiveNavigationView: View {
         switch navigationCoordinator.splitViewSelection ?? .examples {
         case .examples:
             NavigationStack {
-                ExamplesView()
+                ExamplesView(viewModel: $contentViewModel)
             }
         case .tools:
             NavigationStack {

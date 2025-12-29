@@ -19,7 +19,7 @@ struct ModelAvailabilityView: View {
       description: "Check if Apple Intelligence is available on this device",
       defaultPrompt: DefaultPrompts.modelAvailability,
       currentPrompt: .constant(DefaultPrompts.modelAvailability),
-      isRunning: isChecking,
+      isRunning: $isChecking,
       errorMessage: nil,
       codeExample: DefaultPrompts.modelAvailabilityCode,
       onRun: checkAvailability,
@@ -131,8 +131,8 @@ private struct RequirementRow: View {
   }
 }
 
-#Preview {
-  NavigationStack {
-    ModelAvailabilityView()
-  }
-}
+//#Preview {
+//  NavigationStack {
+//    ModelAvailabilityView()
+//  }
+//}

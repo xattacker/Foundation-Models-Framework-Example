@@ -18,7 +18,7 @@ struct GenerationGuidesView: View {
       description: "Guided generation with constraints and structured output",
       defaultPrompt: DefaultPrompts.generationGuides,
       currentPrompt: $currentPrompt,
-      isRunning: executor.isRunning,
+      isRunning: $executor.isRunning,
       errorMessage: executor.errorMessage,
       codeExample: DefaultPrompts.generationGuidesCode(prompt: currentPrompt),
       onRun: executeGenerationGuides,
@@ -69,29 +69,39 @@ struct GenerationGuidesView: View {
   }
 
   private func executeGenerationGuides() {
-    Task {
-      await executor.executeStructured(
-        prompt: currentPrompt,
-        type: ProductReview.self
-      ) { review in
-        """
-        🛍️ Product: \(review.productName)
-        ⭐ Rating: \(review.rating)/5
+      Task {
+        await executor.executeStructured(
+          prompt: currentPrompt,
+          type: CarPerformance.self
+        ) { performance in
+          """
+          🛍️ 廠牌: \(performance.brandName)
+                  
+          🛍️ 車型: \(performance.modelName)
+                      
+          📌 動力系統:
+          \(performance.powerType.title)
+                      
+          📌 座位數:
+           \(String(format: "%d人座", performance.seat))
+                                               
+          📌 續航里程:
+          \(performance.rangeKm ?? -1)
+          
+          📌 最大馬力:
+          \(performance.horsePower)
 
-        ✅ Pros:
-        \(review.pros.map { "• \($0)" }.joined(separator: "\n"))
-
-        ❌ Cons:
-        \(review.cons.map { "• \($0)" }.joined(separator: "\n"))
-
-        💬 Review:
-        \(review.reviewText)
-
-        📌 Recommendation:
-        \(review.recommendation)
-        """
+          📌 \(performance.powerType == .electric ? "平均能耗" : "平均油耗"):
+          \(performance.efficiency)
+                        
+          📌 評比分數:
+          \(performance.score)
+                                
+          📌 評語:
+          \(performance.comment)
+          """
+        }
       }
-    }
   }
 
   private func resetToDefaults() {
@@ -100,8 +110,8 @@ struct GenerationGuidesView: View {
   }
 }
 
-#Preview {
-  NavigationStack {
-    GenerationGuidesView()
-  }
-}
+//#Preview {
+//  NavigationStack {
+//    GenerationGuidesView()
+//  }
+//}

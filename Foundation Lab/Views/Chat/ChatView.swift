@@ -202,8 +202,8 @@ struct ChatView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        ChatView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        ChatView()
+//    }
+//}

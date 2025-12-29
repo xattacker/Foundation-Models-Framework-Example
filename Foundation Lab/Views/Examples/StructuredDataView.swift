@@ -18,7 +18,7 @@ struct StructuredDataView: View {
       description: "Generate and parse structured information",
       defaultPrompt: DefaultPrompts.structuredData,
       currentPrompt: $currentPrompt,
-      isRunning: executor.isRunning,
+      isRunning: $executor.isRunning,
       errorMessage: executor.errorMessage,
       codeExample: DefaultPrompts.structuredDataCode(prompt: currentPrompt),
       onRun: executeStructuredData,
@@ -92,8 +92,8 @@ struct StructuredDataView: View {
   }
 }
 
-#Preview {
-  NavigationStack {
-    StructuredDataView()
-  }
-}
+//#Preview {
+//  NavigationStack {
+//    StructuredDataView()
+//  }
+//}

@@ -110,7 +110,7 @@ struct GenerablePatternView: View {
             description: "Use the @Generable macro with @Guide constraints for type-safe generation",
             defaultPrompt: currentPrompt,
             currentPrompt: .constant(currentPrompt),
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

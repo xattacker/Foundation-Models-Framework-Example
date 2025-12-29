@@ -24,7 +24,7 @@ struct ToolsView: View {
     }
     .navigationTitle("Tools")
     .navigationDestination(for: ToolExample.self) { tool in
-      tool.destination
+      tool.createView()
     }
   }
 

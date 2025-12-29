@@ -29,7 +29,7 @@ struct GuidedDynamicSchemaView: View {
             description: "Apply constraints to generated values using schema properties",
             defaultPrompt: patternInput,
             currentPrompt: bindingForSelectedGuide,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

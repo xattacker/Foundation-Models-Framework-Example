@@ -21,7 +21,7 @@ struct BasicChatView: View {
             description: "Single prompt-response interaction with the AI assistant",
             defaultPrompt: DefaultPrompts.basicChat,
             currentPrompt: $currentPrompt,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: DefaultPrompts.basicChatCode(
                 prompt: currentPrompt,

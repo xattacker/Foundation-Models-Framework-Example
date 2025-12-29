@@ -122,7 +122,7 @@ struct ProductReview {
     @Guide(description: "Product name")
     let productName: String
 
-    @Guide(description: "Rating from 1 to 5")
+    @Guide(description: "Rating from 1 to 5", .range(1...5))
     let rating: Int
 
     @Guide(description: "Review text between 50-200 words")

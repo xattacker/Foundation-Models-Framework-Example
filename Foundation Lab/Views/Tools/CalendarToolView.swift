@@ -26,18 +26,36 @@ struct CalendarToolView: View {
           SuccessBanner(message: successMessage)
         }
 
-        ToolInputField(
-          label: "CALENDAR QUERY",
-          text: $query,
-          placeholder: "What events do I have today?"
-        )
+        VStack(alignment: .leading, spacing: Spacing.small) {
+          Text("CALENDAR QUERY")
+            .font(.footnote)
+            .fontWeight(.medium)
+            .foregroundColor(.secondary)
 
-        ToolExecuteButton(
-          "Query Calendar",
-          systemImage: "calendar",
-          isRunning: executor.isRunning,
-          action: executeCalendarQuery
-        )
+          TextEditor(text: $query)
+            .font(.body)
+            .scrollContentBackground(.hidden)
+            .padding(Spacing.medium)
+            .frame(height: 50)
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(12)
+        }
+
+        Button(action: executeCalendarQuery) {
+          HStack(spacing: Spacing.small) {
+            if executor.isRunning {
+              ProgressView()
+                .scaleEffect(0.8)
+                .tint(.white)
+            }
+            Text(executor.isRunning ? "Querying Calendar..." : "Query Calendar")
+              .font(.callout)
+              .fontWeight(.medium)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, Spacing.small)
+        }
+        .buttonStyle(.glassProminent)
         .disabled(executor.isRunning || query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
         if !executor.result.isEmpty {

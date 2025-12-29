@@ -23,7 +23,7 @@ struct BasicDynamicSchemaView: View {
             description: "Create simple object schemas at runtime using DynamicGenerationSchema",
             defaultPrompt: personInput,
             currentPrompt: bindingForSelectedExample,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

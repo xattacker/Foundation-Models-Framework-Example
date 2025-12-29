@@ -27,7 +27,7 @@ struct SchemaErrorHandlingView: View {
             description: "Handle schema validation errors and edge cases gracefully",
             defaultPrompt: testInput,
             currentPrompt: $testInput,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },
@@ -141,8 +141,8 @@ struct SchemaErrorHandlingView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        SchemaErrorHandlingView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        SchemaErrorHandlingView()
+//    }
+//}

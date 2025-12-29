@@ -20,7 +20,7 @@ struct StreamingResponseView: View {
             description: "Real-time response streaming as text is generated",
             defaultPrompt: DefaultPrompts.streaming,
             currentPrompt: $currentPrompt,
-            isRunning: isStreaming,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: DefaultPrompts.streamingResponseCode(prompt: currentPrompt),
             onRun: executeStreaming,
@@ -118,8 +118,8 @@ struct StreamingResponseView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        StreamingResponseView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        StreamingResponseView()
+//    }
+//}

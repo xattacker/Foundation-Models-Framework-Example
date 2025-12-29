@@ -12,32 +12,36 @@ extension FormBuilderSchemaView {
     func addPersonalInfoFields(to properties: inout [DynamicGenerationSchema.Property], for lowercased: String) {
         if lowercased.contains("personal") || lowercased.contains("name") {
             properties.append(
-                DynamicSchemaHelpers.typedProperty(
-                    "name",
-                    type: String.self,
-                    description: "Full name"
+                DynamicGenerationSchema.Property(
+                    name: "name",
+                    description: "Full name",
+                    schema: .init(type: String.self)
                 )
             )
         }
 
         if lowercased.contains("email") || lowercased.contains("contact") {
             properties.append(
-                DynamicSchemaHelpers.guidedProperty(
-                    "email",
-                    type: String.self,
-                    guides: [.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z] {2,}$/)],
-                    description: "Email address"
+                DynamicGenerationSchema.Property(
+                    name: "email",
+                    description: "Email address",
+                    schema: .init(
+                        type: String.self,
+                        guides: [.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z] {2,}$/)]
+                    )
                 )
             )
         }
 
         if lowercased.contains("phone") || lowercased.contains("contact") {
             properties.append(
-                DynamicSchemaHelpers.guidedProperty(
-                    "phone",
-                    type: String.self,
-                    guides: [.pattern(/\(\d {3}\) \d {3}-\d {4}/)],
+                DynamicGenerationSchema.Property(
+                    name: "phone",
                     description: "Phone number (US format)",
+                    schema: .init(
+                        type: String.self,
+                        guides: [.pattern(/\(\d {3}\) \d {3}-\d {4}/)]
+                    ),
                     isOptional: true
                 )
             )
@@ -47,20 +51,22 @@ extension FormBuilderSchemaView {
     func addExperienceFields(to properties: inout [DynamicGenerationSchema.Property], for lowercased: String) {
         if lowercased.contains("experience") || lowercased.contains("job") {
             properties.append(
-                DynamicSchemaHelpers.guidedProperty(
-                    "yearsOfExperience",
-                    type: Int.self,
-                    guides: [.range(0...50)],
+                DynamicGenerationSchema.Property(
+                    name: "yearsOfExperience",
                     description: "Years of professional experience",
+                    schema: .init(
+                        type: Int.self,
+                        guides: [.range(0...50)]
+                    ),
                     isOptional: true
                 )
             )
 
             properties.append(
-                DynamicSchemaHelpers.typedProperty(
-                    "currentPosition",
-                    type: String.self,
+                DynamicGenerationSchema.Property(
+                    name: "currentPosition",
                     description: "Current job title",
+                    schema: .init(type: String.self),
                     isOptional: true
                 )
             )
@@ -70,10 +76,10 @@ extension FormBuilderSchemaView {
     func addSkillsFields(to properties: inout [DynamicGenerationSchema.Property], for lowercased: String) {
         if lowercased.contains("skill") {
             properties.append(
-                DynamicSchemaHelpers.arrayProperty(
-                    "skills",
-                    elementSchema: .init(type: String.self),
-                    description: "List of skills"
+                DynamicGenerationSchema.Property(
+                    name: "skills",
+                    description: "List of skills",
+                    schema: .init(arrayOf: .init(type: String.self))
                 )
             )
         }
@@ -81,36 +87,36 @@ extension FormBuilderSchemaView {
 
     func addCommonFields(to properties: inout [DynamicGenerationSchema.Property]) {
         properties.append(
-            DynamicSchemaHelpers.typedProperty(
-                "availability",
-                type: String.self,
+            DynamicGenerationSchema.Property(
+                name: "availability",
                 description: "When available to start",
+                schema: .init(type: String.self),
                 isOptional: true
             )
         )
 
         properties.append(
-            DynamicSchemaHelpers.typedProperty(
-                "salaryExpectation",
-                type: String.self,
+            DynamicGenerationSchema.Property(
+                name: "salaryExpectation",
                 description: "Salary expectation or range",
+                schema: .init(type: String.self),
                 isOptional: true
             )
         )
 
         properties.append(
-            DynamicSchemaHelpers.typedProperty(
-                "remoteWork",
-                type: Bool.self,
+            DynamicGenerationSchema.Property(
+                name: "remoteWork",
                 description: "Open to remote work",
+                schema: .init(type: Bool.self),
                 isOptional: true
             )
         )
     }
 
     func createPredefinedJobApplicationSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "JobApplication",
+        DynamicGenerationSchema(
+            name: "JobApplication",
             description: "Job application form data",
             properties: [
                 createPersonalInfoProperty(),
@@ -121,33 +127,37 @@ extension FormBuilderSchemaView {
     }
 
     func createPersonalInfoProperty() -> DynamicGenerationSchema.Property {
-        DynamicSchemaHelpers.nestedProperty(
-            "personalInfo",
-            schema: createPersonalInfoSchema(),
-            description: "Personal information"
+        DynamicGenerationSchema.Property(
+            name: "personalInfo",
+            description: "Personal information",
+            schema: createPersonalInfoSchema()
         )
     }
 
     func createPersonalInfoSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "PersonalInfo",
+        DynamicGenerationSchema(
+            name: "PersonalInfo",
             properties: [
-                DynamicSchemaHelpers.typedProperty(
-                    "fullName",
-                    type: String.self,
-                    description: "Applicant's full name"
+                DynamicGenerationSchema.Property(
+                    name: "fullName",
+                    description: "Applicant's full name",
+                    schema: .init(type: String.self)
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "email",
-                    type: String.self,
-                    guides: [.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z] {2,}$/)],
-                    description: "Email address"
+                DynamicGenerationSchema.Property(
+                    name: "email",
+                    description: "Email address",
+                    schema: .init(
+                        type: String.self,
+                        guides: [.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z] {2,}$/)]
+                    )
                 ),
-                DynamicSchemaHelpers.guidedProperty(
-                    "phone",
-                    type: String.self,
-                    guides: [.pattern(/\(\d {3}\) \d {3}-\d {4}/)],
+                DynamicGenerationSchema.Property(
+                    name: "phone",
                     description: "Phone number",
+                    schema: .init(
+                        type: String.self,
+                        guides: [.pattern(/\(\d {3}\) \d {3}-\d {4}/)]
+                    ),
                     isOptional: true
                 )
             ]
@@ -155,64 +165,66 @@ extension FormBuilderSchemaView {
     }
 
     func createExperienceProperty() -> DynamicGenerationSchema.Property {
-        DynamicSchemaHelpers.nestedProperty(
-            "experience",
-            schema: createExperienceSchema(),
-            description: "Professional experience"
+        DynamicGenerationSchema.Property(
+            name: "experience",
+            description: "Professional experience",
+            schema: createExperienceSchema()
         )
     }
 
     func createExperienceSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "Experience",
+        DynamicGenerationSchema(
+            name: "Experience",
             properties: [
-                DynamicSchemaHelpers.guidedProperty(
-                    "years",
-                    type: Int.self,
-                    guides: [.range(0...50)],
-                    description: "Years of experience"
+                DynamicGenerationSchema.Property(
+                    name: "years",
+                    description: "Years of experience",
+                    schema: .init(
+                        type: Int.self,
+                        guides: [.range(0...50)]
+                    )
                 ),
-                DynamicSchemaHelpers.typedProperty(
-                    "currentRole",
-                    type: String.self,
-                    description: "Current position"
+                DynamicGenerationSchema.Property(
+                    name: "currentRole",
+                    description: "Current position",
+                    schema: .init(type: String.self)
                 ),
-                DynamicSchemaHelpers.arrayProperty(
-                    "skills",
-                    elementSchema: .init(type: String.self),
-                    description: "Technical skills"
+                DynamicGenerationSchema.Property(
+                    name: "skills",
+                    description: "Technical skills",
+                    schema: .init(arrayOf: .init(type: String.self))
                 )
             ]
         )
     }
 
     func createPreferencesProperty() -> DynamicGenerationSchema.Property {
-        DynamicSchemaHelpers.nestedProperty(
-            "preferences",
-            schema: createPreferencesSchema(),
-            description: "Job preferences"
+        DynamicGenerationSchema.Property(
+            name: "preferences",
+            description: "Job preferences",
+            schema: createPreferencesSchema()
         )
     }
 
     func createPreferencesSchema() -> DynamicGenerationSchema {
-        DynamicSchemaHelpers.schema(
-            "Preferences",
+        DynamicGenerationSchema(
+            name: "Preferences",
             properties: [
-                DynamicSchemaHelpers.typedProperty(
-                    "startDate",
-                    type: String.self,
-                    description: "Available to start"
+                DynamicGenerationSchema.Property(
+                    name: "startDate",
+                    description: "Available to start",
+                    schema: .init(type: String.self)
                 ),
-                DynamicSchemaHelpers.typedProperty(
-                    "salaryRange",
-                    type: String.self,
+                DynamicGenerationSchema.Property(
+                    name: "salaryRange",
                     description: "Expected salary",
+                    schema: .init(type: String.self),
                     isOptional: true
                 ),
-                DynamicSchemaHelpers.typedProperty(
-                    "remoteWork",
-                    type: Bool.self,
-                    description: "Open to remote"
+                DynamicGenerationSchema.Property(
+                    name: "remoteWork",
+                    description: "Open to remote",
+                    schema: .init(type: Bool.self)
                 )
             ]
         )

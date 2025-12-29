@@ -10,7 +10,9 @@ import FoundationModelsTools
 import SwiftUI
 
 struct WeatherToolView: View {
-    @State private var executor = ToolExecutor()
+    @State private var isRunning = false
+    @State private var result: String = ""
+    @State private var errorMessage: String?
     @State private var location: String = "San Francisco"
 
     var body: some View {
@@ -18,8 +20,8 @@ struct WeatherToolView: View {
             title: "Weather",
             icon: "cloud.sun",
             description: "Get current weather information for any location",
-            isRunning: executor.isRunning,
-            errorMessage: executor.errorMessage
+            isRunning: isRunning,
+            errorMessage: errorMessage
         ) {
             VStack(alignment: .leading, spacing: Spacing.large) {
                 ToolInputField(
@@ -31,15 +33,15 @@ struct WeatherToolView: View {
                 ToolExecuteButton(
                     "Get Weather",
                     systemImage: "cloud.sun",
-                    isRunning: executor.isRunning,
+                    isRunning: isRunning,
                     action: executeWeatherTool
                 )
                 .disabled(location.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
-                if !executor.result.isEmpty {
+                if !result.isEmpty {
                     ResultDisplay(
-                        result: executor.result,
-                        isSuccess: executor.errorMessage == nil
+                        result: result,
+                        isSuccess: errorMessage == nil
                     )
                 }
             }
@@ -48,11 +50,30 @@ struct WeatherToolView: View {
 
     private func executeWeatherTool() {
         Task {
-            await executor.execute(
-                tool: WeatherTool(),
-                prompt: "What's the weather like in \(location)?"
-            )
+            await performWeatherRequest()
         }
+    }
+
+    @MainActor
+    private func performWeatherRequest() async {
+        isRunning = true
+        errorMessage = nil
+        result = ""
+
+        do {
+            let session = LanguageModelSession(tools: [WeatherTool()])
+            let response = try await session.respond(
+                to: Prompt("What's the weather like in \(location)?"))
+            result = response.content
+        } catch let generationError as LanguageModelSession.GenerationError {
+            errorMessage = FoundationModelsErrorHandler.handleGenerationError(generationError)
+        } catch let toolCallError as LanguageModelSession.ToolCallError {
+            errorMessage = FoundationModelsErrorHandler.handleToolCallError(toolCallError)
+        } catch {
+            errorMessage = "Failed to get weather: \(error.localizedDescription)"
+        }
+
+        isRunning = false
     }
 }
 

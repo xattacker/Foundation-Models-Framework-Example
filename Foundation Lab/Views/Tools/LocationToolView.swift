@@ -25,12 +25,22 @@ struct LocationToolView: View {
           SuccessBanner(message: successMessage)
         }
 
-        ToolExecuteButton(
-          "Get Current Location",
-          systemImage: "location",
-          isRunning: executor.isRunning,
-          action: getCurrentLocation
-        )
+        Button(action: getCurrentLocation) {
+          HStack(spacing: Spacing.small) {
+            if executor.isRunning {
+              ProgressView()
+                .scaleEffect(0.8)
+                .tint(.white)
+            }
+            Text(executor.isRunning ? "Getting Location..." : "Get Current Location")
+              .font(.callout)
+              .fontWeight(.medium)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, Spacing.small)
+        }
+        .buttonStyle(.glassProminent)
+        .disabled(executor.isRunning)
 
         if !executor.result.isEmpty {
           ResultDisplay(result: executor.result, isSuccess: executor.errorMessage == nil)

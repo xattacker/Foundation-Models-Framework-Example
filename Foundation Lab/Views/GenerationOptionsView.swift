@@ -234,6 +234,6 @@ struct GenerationOptionsView: View {
     }
 }
 
-#Preview {
-    GenerationOptionsView()
-}
+//#Preview {
+//    GenerationOptionsView()
+//}

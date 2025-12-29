@@ -14,7 +14,7 @@ struct ExampleViewBase<Content: View>: View {
   let description: String
   let defaultPrompt: String
   @Binding var currentPrompt: String
-  let isRunning: Bool
+  @Binding var isRunning: Bool
   let errorMessage: String?
   let codeExample: String?
   let onRun: () -> Void
@@ -26,7 +26,7 @@ struct ExampleViewBase<Content: View>: View {
     description: String,
     defaultPrompt: String,
     currentPrompt: Binding<String>,
-    isRunning: Bool = false,
+    isRunning: Binding<Bool>,
     errorMessage: String? = nil,
     codeExample: String? = nil,
     onRun: @escaping () -> Void,
@@ -37,7 +37,7 @@ struct ExampleViewBase<Content: View>: View {
     self.description = description
     self.defaultPrompt = defaultPrompt
     self._currentPrompt = currentPrompt
-    self.isRunning = isRunning
+    self._isRunning = isRunning
     self.errorMessage = errorMessage
     self.codeExample = codeExample
     self.onRun = onRun
@@ -168,23 +168,23 @@ struct PromptSuggestions: View {
   }
 }
 
-#Preview {
-  NavigationStack {
-    ExampleViewBase(
-      title: "Sample Example",
-      description: "This is a sample example for demonstration",
-      defaultPrompt: "Tell me a joke",
-      currentPrompt: .constant("Tell me a joke"),
-      isRunning: false,
-      errorMessage: nil,
-      onRun: {},
-      onReset: {},
-      content: {
-      ResultDisplay(
-        result: "Why don't scientists trust atoms? Because they make up everything!",
-        isSuccess: true
-      )
-    }
-    )
-  }
-}
+//#Preview {
+//  NavigationStack {
+//    ExampleViewBase(
+//      title: "Sample Example",
+//      description: "This is a sample example for demonstration",
+//      defaultPrompt: "Tell me a joke",
+//      currentPrompt: .constant("Tell me a joke"),
+//      isRunning: false,
+//      errorMessage: nil,
+//      onRun: {},
+//      onReset: {},
+//      content: {
+//      ResultDisplay(
+//        result: "Why don't scientists trust atoms? Because they make up everything!",
+//        isSuccess: true
+//      )
+//    }
+//    )
+//  }
+//}

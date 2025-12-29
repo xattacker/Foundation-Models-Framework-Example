@@ -11,7 +11,9 @@ import MusicKit
 import SwiftUI
 
 struct MusicToolView: View {
-  @State private var executor = ToolExecutor()
+  @State private var isRunning = false
+  @State private var result: String = ""
+  @State private var errorMessage: String?
   @State private var query: String = "Search for songs by Taylor Swift"
 
   var body: some View {
@@ -19,26 +21,44 @@ struct MusicToolView: View {
       title: "Music",
       icon: "music.note",
       description: "Search and play music, manage playlists, get recommendations",
-      isRunning: executor.isRunning,
-      errorMessage: executor.errorMessage
+      isRunning: isRunning,
+      errorMessage: errorMessage
     ) {
       VStack(alignment: .leading, spacing: Spacing.large) {
-        ToolInputField(
-          label: "Music Query",
-          text: $query,
-          placeholder: "Search for songs, artists, or albums"
-        )
+        VStack(alignment: .leading, spacing: 8) {
+          Text("MUSIC QUERY")
+            .font(.footnote)
+            .fontWeight(.medium)
+            .foregroundColor(.secondary)
 
-        ToolExecuteButton(
-          "Search Music",
-          systemImage: "music.note",
-          isRunning: executor.isRunning,
-          action: executeMusicQuery
-        )
-        .disabled(executor.isRunning || query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+          TextEditor(text: $query)
+            .scrollContentBackground(.hidden)
+            .padding(Spacing.medium)
+            .frame(height: 50)
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(12)
+        }
 
-        if !executor.result.isEmpty {
-          ResultDisplay(result: executor.result, isSuccess: executor.errorMessage == nil)
+        Button(action: executeMusicQuery) {
+          HStack(spacing: Spacing.small) {
+            if isRunning {
+              ProgressView()
+                .scaleEffect(0.8)
+            } else {
+              Image(systemName: "music.note")
+            }
+
+            Text(isRunning ? "Searching..." : "Search Music")
+              .fontWeight(.medium)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, Spacing.small)
+        }
+        .buttonStyle(.glassProminent)
+        .disabled(isRunning || query.isEmpty)
+
+        if !result.isEmpty {
+          ResultDisplay(result: result, isSuccess: errorMessage == nil)
         }
       }
     }
@@ -52,32 +72,34 @@ struct MusicToolView: View {
 
   @MainActor
   private func performMusicQuery() async {
-    // Show loading state during pre-execution checks
-    executor.isRunning = true
-    executor.errorMessage = nil
-    executor.result = ""
+    isRunning = true
+    errorMessage = nil
+    result = ""
+    defer { isRunning = false }
 
     if let authorizationError = await musicAuthorizationIssueDescription() {
-      executor.errorMessage = authorizationError
-      executor.isRunning = false
+      errorMessage = authorizationError
       return
     }
 
     do {
       let subscription = try await MusicSubscription.current
       guard subscription.canPlayCatalogContent else {
-        executor.errorMessage = "An active Apple Music subscription is required to search the catalog."
-        executor.isRunning = false
+        errorMessage = "An active Apple Music subscription is required to search the catalog."
         return
       }
     } catch {
-      executor.errorMessage = "Unable to verify Apple Music subscription: \(error.localizedDescription)"
-      executor.isRunning = false
+      errorMessage = "Unable to verify Apple Music subscription: \(error.localizedDescription)"
       return
     }
 
-    // executor.execute() will manage isRunning state for the tool execution
-    await executor.execute(tool: MusicTool(), prompt: query)
+    do {
+      let session = LanguageModelSession(tools: [MusicTool()])
+      let response = try await session.respond(to: Prompt(query))
+      result = response.content
+    } catch {
+      errorMessage = "Failed to search music: \(error.localizedDescription)"
+    }
   }
 
   @MainActor

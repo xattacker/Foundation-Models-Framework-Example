@@ -36,14 +36,16 @@ enum DefaultPrompts {
 
   // MARK: - Generation Guides
 
-  static let generationGuides = "Write a product review for a smartphone."
+  static let generationGuides = "Volvo XC40"
 
   static let generationGuidesSuggestions = [
-    "Review a laptop for students",
-    "Write a review for wireless headphones",
-    "Review a fitness tracker",
-    "Write a review for a coffee maker",
-    "Review a streaming service"
+    "福斯 Tiguan",
+    "福斯 Golf",
+    "Luxgen M7",
+    "Honda Fit",
+    "MG ZS",
+    "Nissan I-TIDA",
+    "Nissan Livina"
   ]
 
   // MARK: - Streaming

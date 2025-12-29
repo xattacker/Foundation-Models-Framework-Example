@@ -39,7 +39,7 @@ struct ReferencedSchemaView: View {
             description: "Use schema references to avoid duplication and create reusable components",
             defaultPrompt: blogInput,
             currentPrompt: .constant(currentInput),
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },
@@ -191,8 +191,8 @@ struct ReferencedSchemaView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        ReferencedSchemaView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        ReferencedSchemaView()
+//    }
+//}

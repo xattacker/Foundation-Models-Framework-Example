@@ -32,7 +32,7 @@ struct ArrayDynamicSchemaView: View {
             description: "Create array schemas with minimum and maximum element constraints",
             defaultPrompt: todoInput,
             currentPrompt: bindingForSelectedExample,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

@@ -256,7 +256,7 @@ private extension HealthDashboardView {
     }
 
     func loadHealthData() async {
-        healthDataManager.configureModelContext(modelContext)
+        healthDataManager.setModelContext(modelContext)
 
         if !healthDataManager.isAuthorized {
             do {

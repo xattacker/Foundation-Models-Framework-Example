@@ -33,7 +33,7 @@ struct FormBuilderSchemaView: View {
             description: "Generate form schemas from natural language descriptions",
             defaultPrompt: formDescription,
             currentPrompt: $formDescription,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

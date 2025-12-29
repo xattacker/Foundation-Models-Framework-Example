@@ -91,7 +91,7 @@ struct InvoiceProcessingSchemaView: View {
             description: "Extract structured data from real-world invoices using complex schemas",
             defaultPrompt: invoiceText,
             currentPrompt: $invoiceText,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

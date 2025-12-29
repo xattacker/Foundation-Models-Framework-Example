@@ -56,7 +56,7 @@ final class ExampleExecutor {
             }
 
         } catch {
-            errorMessage = FoundationModelsErrorHandler.handleError(error)
+            errorMessage = handleError(error)
             self.successMessage = nil
         }
 
@@ -88,11 +88,13 @@ final class ExampleExecutor {
                 to: Prompt(prompt),
                 generating: type
             )
-
+            
+            print(response.rawContent.jsonString)
+            
             result = formatter(response.content)
 
         } catch {
-            errorMessage = FoundationModelsErrorHandler.handleError(error)
+            errorMessage = handleError(error)
         }
 
         isRunning = false
@@ -133,7 +135,7 @@ final class ExampleExecutor {
             }
 
         } catch {
-            errorMessage = FoundationModelsErrorHandler.handleError(error)
+            errorMessage = handleError(error)
         }
 
         isRunning = false
@@ -165,4 +167,16 @@ final class ExampleExecutor {
         }
     }
 
+    /// Handles various error types and returns user-friendly messages
+    func handleError(_ error: Error) -> String {
+        if let generationError = error as? LanguageModelSession.GenerationError {
+            return FoundationModelsErrorHandler.handleGenerationError(generationError)
+        } else if let toolCallError = error as? LanguageModelSession.ToolCallError {
+            return FoundationModelsErrorHandler.handleToolCallError(toolCallError)
+        } else if let customError = error as? FoundationModelsError {
+            return customError.localizedDescription
+        } else {
+            return "Unexpected error: \(error.localizedDescription)"
+        }
+    }
 }

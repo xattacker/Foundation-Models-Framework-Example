@@ -23,7 +23,7 @@ struct UnionTypesSchemaView: View {
             description: "Create schemas that can be one of several different types",
             defaultPrompt: contactInput,
             currentPrompt: bindingForSelectedExample,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },
@@ -132,8 +132,8 @@ struct UnionTypesSchemaView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        UnionTypesSchemaView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        UnionTypesSchemaView()
+//    }
+//}

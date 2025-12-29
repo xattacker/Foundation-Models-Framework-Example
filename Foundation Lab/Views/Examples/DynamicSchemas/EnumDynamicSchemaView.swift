@@ -25,7 +25,7 @@ struct EnumDynamicSchemaView: View {
             description: "Create schemas with predefined string choices using anyOf",
             defaultPrompt: customerInput,
             currentPrompt: bindingForSelectedExample,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

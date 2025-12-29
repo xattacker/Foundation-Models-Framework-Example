@@ -41,7 +41,7 @@ struct NestedDynamicSchemaView: View {
             description: "Create complex nested object structures with multiple levels",
             defaultPrompt: companyInput,
             currentPrompt: bindingForSelectedExample,
-            isRunning: executor.isRunning,
+            isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
             codeExample: exampleCode,
             onRun: { Task { await runExample() } },

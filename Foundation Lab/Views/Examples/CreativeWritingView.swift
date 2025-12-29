@@ -20,7 +20,7 @@ struct CreativeWritingView: View {
       description: "Generate stories, poems, and creative content",
       defaultPrompt: DefaultPrompts.creativeWriting,
       currentPrompt: $currentPrompt,
-      isRunning: executor.isRunning,
+      isRunning: $executor.isRunning,
       errorMessage: executor.errorMessage,
       codeExample: DefaultPrompts.creativeWritingCode(prompt: currentPrompt,
                                                         instructions: showInstructions && !instructions.isEmpty ?
@@ -105,8 +105,8 @@ struct CreativeWritingView: View {
   }
 }
 
-#Preview {
-  NavigationStack {
-    CreativeWritingView()
-  }
-}
+//#Preview {
+//  NavigationStack {
+//    CreativeWritingView()
+//  }
+//}
