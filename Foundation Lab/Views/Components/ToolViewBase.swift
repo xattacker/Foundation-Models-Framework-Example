@@ -215,6 +215,24 @@ struct ResultDisplay: View {
   }
 }
 
+struct ResultViewDisplay: View {
+  let resultView: any View
+  let isSuccess: Bool
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: Spacing.small) {
+      HStack {
+        Text("RESULT")
+          .font(.footnote)
+          .fontWeight(.medium)
+          .foregroundColor(.secondary)
+      }
+
+      AnyView(self.resultView)
+    }
+  }
+}
+
 //#Preview {
 //  NavigationStack {
 //    ToolViewBase(

@@ -15,6 +15,7 @@ struct ExampleViewBase<Content: View>: View {
   let defaultPrompt: String
   @Binding var currentPrompt: String
   @Binding var isRunning: Bool
+  let promptInputHeight: CGFloat
   let errorMessage: String?
   let codeExample: String?
   let onRun: () -> Void
@@ -26,6 +27,7 @@ struct ExampleViewBase<Content: View>: View {
     description: String,
     defaultPrompt: String,
     currentPrompt: Binding<String>,
+    promptInputHeight: CGFloat = 120,
     isRunning: Binding<Bool>,
     errorMessage: String? = nil,
     codeExample: String? = nil,
@@ -37,6 +39,7 @@ struct ExampleViewBase<Content: View>: View {
     self.description = description
     self.defaultPrompt = defaultPrompt
     self._currentPrompt = currentPrompt
+    self.promptInputHeight = promptInputHeight
     self._isRunning = isRunning
     self.errorMessage = errorMessage
     self.codeExample = codeExample
@@ -91,7 +94,7 @@ struct ExampleViewBase<Content: View>: View {
         .font(.body)
         .scrollContentBackground(.hidden)
         .padding(Spacing.medium)
-        .frame(minHeight: 120)
+        .frame(minHeight: self.promptInputHeight)
         .background(Color.gray.opacity(0.1))
         .cornerRadius(12)
     }

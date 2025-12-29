@@ -14,6 +14,7 @@ import SwiftUI
 final class ExampleExecutor {
     var isRunning = false
     var result: String = ""
+    var resultView: (any View)?
     var errorMessage: String?
     var successMessage: String?
     var promptHistory: [String] = []
@@ -85,9 +86,8 @@ final class ExampleExecutor {
         do {
             let session = LanguageModelSession()
             let response = try await session.respond(
-                to: Prompt(prompt),
-                generating: type
-            )
+                                            to: Prompt(prompt),
+                                            generating: type)
             
             print(response.rawContent.jsonString)
             
@@ -99,7 +99,42 @@ final class ExampleExecutor {
 
         isRunning = false
     }
+    
+    func executeStructuredV2<T: Generable>(
+        prompt: String,
+        type: T.Type,
+        formatter: @escaping (T) -> any View
+    ) async {
+        guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            errorMessage = "Please enter a valid prompt"
+            return
+        }
 
+        isRunning = true
+        errorMessage = nil
+        successMessage = nil
+        result = ""
+
+        // Add to history
+        addToHistory(prompt)
+
+        do {
+            let session = LanguageModelSession()
+            let response = try await session.respond(
+                                            to: Prompt(prompt),
+                                            generating: type)
+            
+            print(response.rawContent.jsonString)
+            
+            resultView = formatter(response.content)
+
+        } catch {
+            errorMessage = handleError(error)
+        }
+
+        isRunning = false
+    }
+    
     /// Executes a streaming operation
     func executeStreaming(
         prompt: String,

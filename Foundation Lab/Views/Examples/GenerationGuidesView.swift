@@ -18,6 +18,7 @@ struct GenerationGuidesView: View {
       description: "Guided generation with constraints and structured output",
       defaultPrompt: DefaultPrompts.generationGuides,
       currentPrompt: $currentPrompt,
+      promptInputHeight: 50,
       isRunning: $executor.isRunning,
       errorMessage: executor.errorMessage,
       codeExample: DefaultPrompts.generationGuidesCode(prompt: currentPrompt),
@@ -53,13 +54,13 @@ struct GenerationGuidesView: View {
         }
 
         // Result Display
-        if !executor.result.isEmpty {
+          if let resultView = executor.resultView {
           VStack(alignment: .leading, spacing: 12) {
             Label("Generated Product Review", systemImage: "star.leadinghalf.filled")
               .font(.headline)
 
-            ResultDisplay(
-              result: executor.result,
+            ResultViewDisplay(
+              resultView: resultView,
               isSuccess: executor.errorMessage == nil
             )
           }
@@ -70,36 +71,70 @@ struct GenerationGuidesView: View {
 
   private func executeGenerationGuides() {
       Task {
-        await executor.executeStructured(
+        await executor.executeStructuredV2(
           prompt: currentPrompt,
           type: CarPerformance.self
-        ) { performance in
-          """
-          🛍️ 廠牌: \(performance.brandName)
-                  
-          🛍️ 車型: \(performance.modelName)
-                      
-          📌 動力系統:
-          \(performance.powerType.title)
-                      
-          📌 座位數:
-           \(String(format: "%d人座", performance.seat))
-                                               
-          📌 續航里程:
-          \(performance.rangeKm ?? -1)
-          
-          📌 最大馬力:
-          \(performance.horsePower)
+        ) {
+          performance in
+            return VStack(alignment: .leading, spacing: 12) {
+                InfoRow(
+                    icon: "🏷️",
+                    title: "廠牌",
+                    value: performance.brandName
+                )
 
-          📌 \(performance.powerType == .electric ? "平均能耗" : "平均油耗"):
-          \(performance.efficiency)
-                        
-          📌 評比分數:
-          \(performance.score)
-                                
-          📌 評語:
-          \(performance.comment)
-          """
+                InfoRow(
+                    icon: "🏷️",
+                    title: "車型",
+                    value: performance.modelName
+                )
+
+                Divider()
+
+                InfoRow(
+                    icon: "📍",
+                    title: "動力系統",
+                    value: performance.powerType.title
+                )
+
+                InfoRow(
+                    icon: "📍",
+                    title: "座位數",
+                    value: "\(performance.seat) 人座"
+                )
+
+                InfoRow(
+                    icon: "📍",
+                    title: "續航里程",
+                    value: performance.rangeKm.map { "\($0) km" } ?? "—"
+                )
+
+                InfoRow(
+                    icon: "📍",
+                    title: "最大馬力",
+                    value: "\(performance.horsePower) hp"
+                )
+
+                InfoRow(
+                    icon: "📍",
+                    title: performance.powerType == .electric ? "平均能耗" : "平均油耗",
+                    value: performance.efficiency
+                )
+
+                Divider()
+
+                InfoRow(
+                    icon: "📖",
+                    title: "評比分數",
+                    value: String(format: "%.1f", performance.score)
+                )
+
+                InfoRow(
+                    icon: "📖",
+                    title: "評語",
+                    value: performance.comment
+                )
+            }
         }
       }
   }
