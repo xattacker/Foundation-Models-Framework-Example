@@ -78,6 +78,7 @@ struct GenerationGuidesView: View {
       Task {
         await executor.executeStructuredV2(
           prompt: currentPrompt,
+          instructions: "專業的老司機", // 描述 設定 Model 的角色身份
           type: CarPerformance.self
         ) {
           performance in

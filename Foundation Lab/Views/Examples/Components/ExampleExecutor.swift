@@ -102,6 +102,7 @@ final class ExampleExecutor {
     
     func executeStructuredV2<T: Generable>(
         prompt: String,
+        instructions: String? = nil,
         type: T.Type,
         formatter: @escaping (T) -> any View
     ) async {
@@ -119,10 +120,17 @@ final class ExampleExecutor {
         addToHistory(prompt)
 
         do {
-            let session = LanguageModelSession()
+            let session = LanguageModelSession(instructions: instructions)
+            
+            // 控制產出資料的穩定性
+            var options = GenerationOptions()
+            options.temperature = 0 // 0 表示最穩定, > 0 開始不穩定
+            options.sampling = .greedy // 找最相似的 token
+            
             let response = try await session.respond(
                                             to: Prompt(prompt),
-                                            generating: type)
+                                            generating: type,
+                                            options: options)
             
             print(response.rawContent.jsonString)
             
