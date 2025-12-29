@@ -129,8 +129,8 @@ struct GenerationGuidesView: View {
                 
                 InfoRow(
                     icon: "📍",
-                    title: "妥善率",
-                    value: String(format: "%d", performance.reliability)
+                    title: "妥善率排名",
+                    value: String(format: "%d", performance.reliabilityRanking)
                 )
 
                 Divider()
