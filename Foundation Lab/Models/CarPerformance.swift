@@ -56,8 +56,11 @@ struct CarPerformance {
 
     @Guide(description: "能源效率或平均油耗（例如：km/kWh 或 L/100km）")
     let efficiency: String
+ 
+    @Guide(description: "妥善率，維持穩定、不易發生故障的程度", .range(0...100))
+    let reliability: Int
 
-    @Guide(description: "整體性能評比分數，0-100 分", .range(0...100))
+    @Guide(description: "整體性能評比分數", .range(0...100))
     let score: Double
 
     @Guide(description: "簡短評語，用中文描述性能優缺點")

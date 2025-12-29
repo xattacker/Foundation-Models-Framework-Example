@@ -78,7 +78,7 @@ struct GenerationGuidesView: View {
       Task {
         await executor.executeStructuredV2(
           prompt: currentPrompt,
-          instructions: "專業的老司機", // 描述 設定 Model 的角色身份
+          instructions: "專業的老司機, 對各種車款都很了解", // 描述設定 Model 的角色身份
           type: CarPerformance.self
         ) {
           performance in
@@ -125,6 +125,12 @@ struct GenerationGuidesView: View {
                     icon: "📍",
                     title: performance.powerType == .electric ? "平均能耗" : "平均油耗",
                     value: performance.efficiency
+                )
+                
+                InfoRow(
+                    icon: "📍",
+                    title: "妥善率",
+                    value: String(format: "%d", performance.reliability)
                 )
 
                 Divider()
