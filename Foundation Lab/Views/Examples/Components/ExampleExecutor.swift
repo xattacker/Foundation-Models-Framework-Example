@@ -124,8 +124,8 @@ final class ExampleExecutor {
             
             // 控制產出資料的穩定性
             var options = GenerationOptions()
-            options.temperature = 0 // 0 表示最穩定, > 0 開始不穩定
-            options.sampling = .greedy // 找最相似的 token
+            options.temperature = 0 // 0 表示最穩定, > 0 開始自由度變大
+            options.sampling = .greedy // 採樣模式 找最相似的結果
             
             let response = try await session.respond(
                                             to: Prompt(prompt),
