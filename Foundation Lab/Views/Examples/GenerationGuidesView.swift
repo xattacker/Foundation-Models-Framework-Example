@@ -79,6 +79,7 @@ struct GenerationGuidesView: View {
         await executor.executeStructuredV2(
           prompt: currentPrompt,
           instructions: "專業的老司機, 對各種車款都很了解", // 描述設定 Model 的角色身份
+          //tools: [CarPerformanceTool()],
           type: CarPerformance.self
         ) {
           performance in

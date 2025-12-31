@@ -103,6 +103,7 @@ final class ExampleExecutor {
     func executeStructuredV2<T: Generable>(
         prompt: String,
         instructions: String? = nil,
+        tools: [any Tool]? = nil,
         type: T.Type,
         formatter: @escaping (T) -> any View
     ) async {
@@ -120,7 +121,7 @@ final class ExampleExecutor {
         addToHistory(prompt)
 
         do {
-            let session = LanguageModelSession(instructions: instructions)
+            let session = LanguageModelSession(tools: tools ?? [], instructions: instructions)
             
             // 控制產出資料的穩定性
             var options = GenerationOptions()
