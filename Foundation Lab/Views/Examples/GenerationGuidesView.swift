@@ -21,7 +21,7 @@ struct GenerationGuidesView: View {
       promptInputHeight: 50,
       isRunning: $executor.isRunning,
       errorMessage: executor.errorMessage,
-      codeExample: DefaultPrompts.generationGuidesCode(prompt: currentPrompt),
+      //codeExample: DefaultPrompts.generationGuidesCode(prompt: currentPrompt),
       onRun: executeGenerationGuides,
       onReset: resetToDefaults
     ) {
@@ -79,7 +79,7 @@ struct GenerationGuidesView: View {
         await executor.executeStructuredV2(
           prompt: currentPrompt,
           instructions: "專業的老司機, 對各種車款都很了解", // 描述設定 Model 的角色身份
-          //tools: [CarPerformanceTool()],
+          //tools: [CarPerformanceTool()], // 自定義的 Tool Calling
           type: CarPerformance.self
         ) {
           performance in
@@ -135,6 +135,18 @@ struct GenerationGuidesView: View {
                 )
 
                 Divider()
+
+                InfoArrayRow(
+                    icon: "🏷️",
+                    title: "優點",
+                    values: performance.advantages
+                )
+
+                InfoArrayRow(
+                    icon: "🏷️",
+                    title: "缺點",
+                    values: performance.defects
+                )
 
                 InfoRow(
                     icon: "🏷️",

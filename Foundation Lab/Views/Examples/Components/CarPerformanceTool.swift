@@ -32,8 +32,9 @@ struct CarPerformanceTool: Tool {
                         efficiency: "15L/100km",
                         reliabilityRanking: 5,
                         score: 80,
-                        comment: "假資料而已"
-                    )
+                        advantages: ["1", "2", "3"],
+                        defects: ["4", "5"],
+                        comment: "假資料而已")
         return mock
     }
 }
