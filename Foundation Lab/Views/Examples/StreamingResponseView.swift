@@ -9,7 +9,7 @@ import FoundationModels
 import SwiftUI
 
 struct StreamingResponseView: View {
-    @State private var currentPrompt = DefaultPrompts.streaming
+    @State private var currentPrompt = "我後天早上8點要從台北出發到台東進行3天2夜的旅遊, 並在第三天下午4點回去, 請規劃一下旅遊行程給我, 並提供每個行程花費的時間"
     @State private var executor = ExampleExecutor()
     @State private var streamingText = ""
     @State private var isStreaming = false
@@ -18,7 +18,7 @@ struct StreamingResponseView: View {
         ExampleViewBase(
             title: "Streaming Response",
             description: "Real-time response streaming as text is generated",
-            defaultPrompt: DefaultPrompts.streaming,
+            defaultPrompt: currentPrompt,
             currentPrompt: $currentPrompt,
             isRunning: $executor.isRunning,
             errorMessage: executor.errorMessage,
@@ -102,7 +102,7 @@ struct StreamingResponseView: View {
 
             await executor.executeStreaming(
                 prompt: currentPrompt,
-                instructions: "You are a creative writer. Generate engaging and vivid content."
+                instructions: "旅遊規劃專家, 擁有豐富的行程安排經驗, 尤其是台灣地區"
             ) { partialResult in
                 streamingText = partialResult
             }

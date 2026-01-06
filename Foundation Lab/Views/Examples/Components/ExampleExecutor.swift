@@ -175,6 +175,7 @@ final class ExampleExecutor {
 
             for try await partialResponse in stream {
                 result = partialResponse.content
+                print("partialResponse:\n\(partialResponse.content)")
                 onPartialResult(partialResponse.content)
             }
 
