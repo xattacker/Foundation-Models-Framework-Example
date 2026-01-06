@@ -51,7 +51,7 @@ struct CarPerformance {
     @Guide(description: "0-100 km/h 加速時間 (秒)，若無則填 null")
     let zeroToHundredSec: Double?
 
-    @Guide(description: "續航里程（公里），如適用")
+    @Guide(description: "續航里程（公里）")
     let rangeKm: Int?
 
     @Guide(description: "能源效率或平均油耗（例如：km/kWh 或 L/100km）")
