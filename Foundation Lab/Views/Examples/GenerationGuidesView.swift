@@ -75,9 +75,25 @@ struct GenerationGuidesView: View {
   }
 
   private func executeGenerationGuides() {
+      let array = currentPrompt.split(separator: " ")
+      guard array.count >= 2 else
+      {
+          print("input format error: brand model")
+          
+          return
+      }
+  
+      
+      // 實作 PromptRepresentable 的 prompt
+      let prompt = CarPerformancePrompt(brand: String(array[0]), model: String(array[1]))
+//      let content = GeneratedContent(properties: [
+//          "brand": String(array[0]),
+//          "model": String(array[1])
+//      ])
+      
       Task {
         await executor.executeStructuredV2(
-          prompt: currentPrompt,
+          prompt: prompt,
           instructions: "專業的老司機, 對各種車款都很了解", // 描述設定 Model 的角色身份
           //tools: [CarPerformanceTool()], // 自定義的 Tool Calling
           type: CarPerformance.self

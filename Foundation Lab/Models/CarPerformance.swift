@@ -29,7 +29,21 @@ enum CarPowerType: String
     }
 }
 
+struct CarPerformancePrompt: PromptRepresentable {
+    let brand: String
+    let model: String
 
+    var promptRepresentation: Prompt {
+        Prompt(
+            """
+            請針對以下車款提供結構化性能評估：
+            廠牌：\(brand)
+            車型：\(model)
+            """
+        )
+    }
+}
+    
 /// 車款性能比較項目
 @Generable
 struct CarPerformance {
@@ -66,7 +80,7 @@ struct CarPerformance {
     @Guide(description: "車款優點條列")
     let advantages: [String]
     
-    @Guide(description: "車款缺陷條列")
+    @Guide(description: "車款缺陷短板")
     let defects: [String]
 
     @Guide(description: "簡短評語，用中文描述性能優缺點")

@@ -101,24 +101,28 @@ final class ExampleExecutor {
     }
     
     func executeStructuredV2<T: Generable>(
-        prompt: String,
+        prompt: PromptRepresentable,
         instructions: String? = nil,
         tools: [any Tool]? = nil,
         type: T.Type,
         formatter: @escaping (T) -> any View
     ) async {
-        guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter a valid prompt"
-            return
+        
+        if let str_prompt = prompt as? String
+        {
+            guard !str_prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                errorMessage = "Please enter a valid prompt"
+                return
+            }
+            
+            // Add to history
+            addToHistory(str_prompt)
         }
 
         isRunning = true
         errorMessage = nil
         successMessage = nil
         result = ""
-
-        // Add to history
-        addToHistory(prompt)
 
         do {
             let session = LanguageModelSession(tools: tools ?? [], instructions: instructions)
