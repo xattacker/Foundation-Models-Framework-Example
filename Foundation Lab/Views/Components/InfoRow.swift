@@ -41,7 +41,8 @@ struct InfoArrayRow: View {
                 .frame(width: 80, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 8) {
-                ForEach(values, id: \.self) { value in
+                ForEach(values, id: \.self) {
+                    value in
                     Text(value)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

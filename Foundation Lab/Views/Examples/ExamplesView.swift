@@ -35,7 +35,7 @@ struct ExamplesView: View {
             case .generationGuides:
                 GenerationGuidesView()
             case .queryLandmarks:
-                GenerationGuidesView()
+                LandmarkQueryView()
             case .streamingResponse:
                 StreamingResponseView()
             case .businessIdeas:
