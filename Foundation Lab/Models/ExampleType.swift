@@ -17,6 +17,7 @@ enum ExampleType: String, CaseIterable, Identifiable {
     case streamingResponse = "streaming_response"
     case modelAvailability = "model_availability"
     case generationGuides = "generation_guides"
+    case queryLandmarks = "generation_landmarks"
     case generationOptions = "generation_options"
     case health = "health"
     case chat = "chat"
@@ -39,6 +40,8 @@ enum ExampleType: String, CaseIterable, Identifiable {
             return "Model Availability"
         case .generationGuides:
             return "Generation Guides"
+        case .queryLandmarks:
+            return "Query Landmarks"
         case .generationOptions:
             return "Generation Options"
         case .health:
@@ -64,6 +67,8 @@ enum ExampleType: String, CaseIterable, Identifiable {
             return "Check Apple Intelligence status"
         case .generationGuides:
             return "Guided generation with constraints"
+        case .queryLandmarks:
+            return "Query landmarks and show on the map"
         case .generationOptions:
             return "Experiment with model parameters"
         case .health:
@@ -89,6 +94,8 @@ enum ExampleType: String, CaseIterable, Identifiable {
             return "checkmark.shield"
         case .generationGuides:
             return "slider.horizontal.3"
+        case .queryLandmarks:
+            return "mappin.and.ellipse"
         case .generationOptions:
             return "tuningfork"
         case .health:

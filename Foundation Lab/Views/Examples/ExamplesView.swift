@@ -34,6 +34,8 @@ struct ExamplesView: View {
                 StructuredDataView()
             case .generationGuides:
                 GenerationGuidesView()
+            case .queryLandmarks:
+                GenerationGuidesView()
             case .streamingResponse:
                 StreamingResponseView()
             case .businessIdeas:
