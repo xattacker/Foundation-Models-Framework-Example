@@ -44,7 +44,7 @@ enum DefaultPrompts {
     "Luxgen M7",
     "Honda Fit",
     "MG ZS",
-    "Nissan I-TIDA",
+    "Nissan Tiida",
     "Nissan Livina"
   ]
 
