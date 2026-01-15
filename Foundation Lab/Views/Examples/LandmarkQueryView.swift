@@ -76,11 +76,14 @@ struct LandmarkQueryView: View {
   }
 
   private func executeQueryLandmark() {
-
+      var prompt = "latitude-longitude: 25.04646322, 121.5179381,"
+      prompt += "搜尋半徑: 5公里,"
+      prompt += "category: " + self.currentPrompt
+      
       Task {
         await executor.executeStructuredV2(
-          prompt: "幫我查詢經緯度 25.04646322, 121.5179381為中心 附近半徑5公里範圍內的加油站, 資料不可重複",
-          instructions: "你是對台灣的各個地區景點以及商家都很了解的資料庫", // 描述設定 Model 的角色身份
+          prompt: prompt,
+          instructions: "幫我以傳入座標點以及分類查詢周圍的landmark 資訊回來", // 描述設定 Model 的角色身份
           type: LandmarkResponse.self
         ) {
           response in
