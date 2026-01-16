@@ -10,14 +10,14 @@ import SwiftUI
 
 
 struct LandmarkQueryView: View {
-  @State private var currentPrompt = "餐廳"
+  @State private var currentPrompt = "餐飲"
   @State private var executor = ExampleExecutor()
 
   var body: some View {
     ExampleViewBase(
       title: "Query Landamrks",
       description: "Query Landamrks with constraints and structured output",
-      defaultPrompt: "餐廳",
+      defaultPrompt: "餐飲",
       currentPrompt: $currentPrompt,
       promptInputHeight: 50,
       isRunning: $executor.isRunning,
@@ -42,7 +42,7 @@ struct LandmarkQueryView: View {
 
         // Prompt Suggestions
         PromptSuggestions(
-          suggestions: DefaultPrompts.generationGuidesSuggestions,
+          suggestions: ["餐飲", "加油站", "交通設施", "便利商店", "購物"],
           onSelect: { currentPrompt = $0 }
         )
 
@@ -76,25 +76,19 @@ struct LandmarkQueryView: View {
   }
 
   private func executeQueryLandmark() {
-      var prompt = "latitude-longitude: 25.04646322, 121.5179381,"
+      var prompt = "中心經緯度座標: 25.04646322,121.5179381,"
       prompt += "搜尋半徑: 5公里,"
       prompt += "category: " + self.currentPrompt
       
       Task {
         await executor.executeStructuredV2(
           prompt: prompt,
-          instructions: "幫我以傳入座標點以及分類查詢周圍的landmark 資訊回來", // 描述設定 Model 的角色身份
+          instructions: "幫我以傳入中心經緯度座標/搜尋半徑以及分類(category)查詢周圍的landmark資訊回來", // 描述設定 Model 的角色身份
           type: LandmarkResponse.self
         ) {
           response in
-            return VStack(alignment: .leading, spacing: 12) {
-                
-                ForEach(response.landmarks, id: \.address) {
-                    landmark in
-                    Text(landmark.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
+            return LandmarkMapView(landmarks: response.landmarks)
+                   .frame(height: 300)
         }
       }
   }
