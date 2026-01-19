@@ -36,7 +36,7 @@ struct CarPerformancePrompt: PromptRepresentable {
     var promptRepresentation: Prompt {
         Prompt(
             """
-            請針對以下車款提供結構化性能評估：
+            請針對以下車款提供結構化性能評估, 資料來源優從網路查詢：
             廠牌：\(brand)
             車型：\(model)
             """
@@ -53,7 +53,7 @@ struct CarPerformance {
     @Guide(description: "車款名稱，例如：Tesla Model 3、Toyota Camry")
     let modelName: String
 
-    @Guide(description: "動力系統類型，請選擇 electric / fuel / hybrid")
+    @Guide(description: "動力系統類型，請選擇 electric(電車) / fuel(油車) / hybrid(混合動力)")
     let powerType: CarPowerType
     
     @Guide(description: "幾人座")
