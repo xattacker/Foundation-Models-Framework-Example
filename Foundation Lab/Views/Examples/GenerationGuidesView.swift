@@ -94,7 +94,7 @@ struct GenerationGuidesView: View {
       Task {
         await executor.executeStructuredV2(
           prompt: prompt,
-          instructions: "專業的車款鑑定專家, 對各種車款都很了解", // 描述設定 Model 的角色身份
+          instructions: "專業的車款評比專家, 對各種車款都很了解", // 描述設定 Model 的角色身份
           //tools: [CarPerformanceTool()], // 自定義的 Tool Calling
           type: CarPerformance.self
         ) {
