@@ -9,7 +9,7 @@ import FoundationModels
 import SwiftUI
 
 struct StreamingResponseView: View {
-    @State private var currentPrompt = "時間區段: 3天2夜, 早上8點出發 到第三天下午四點回程,\n出發地點: 台北,\n目的地點: 台東,旅遊範圍:台東,\n交通工具: 自駕汽車,\n其他需求: 住宿選擇民宿, 一晚價位3000元內"
+    @State private var currentPrompt = "- 時間區段: 3天2夜, 早上8點出發 到第三天下午四點準備回程,\n- 出發地點: 台北,\n- 目的地點: 台東,\n- 旅遊範圍:台東,\n- 交通工具: 自駕汽車,\n- 其他需求: 住宿選擇民宿, 一晚價位3000元內\n-行程時間要考慮交通工具的行駛速度\n- 避免去太遠的離島外島"
     @State private var executor = ExampleExecutor()
     @State private var streamingText = ""
     @State private var isStreaming = false
